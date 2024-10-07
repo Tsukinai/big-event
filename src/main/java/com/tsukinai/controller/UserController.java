@@ -7,6 +7,7 @@ import com.tsukinai.utils.JwtUtil;
 import com.tsukinai.utils.Md5Util;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,6 +49,7 @@ public class UserController {
             //判断密码是否正确
             if (loginUser.getPassword().equals(Md5Util.getMD5String(password))) {
                 Map<String, Object> claims = new HashMap<>();
+                //通过id和用户名生成token
                 claims.put("id", loginUser.getId());
                 claims.put("username", loginUser.getUsername());
                 String token = JwtUtil.genToken(claims);
@@ -56,6 +58,17 @@ public class UserController {
                 return Result.error("密码错误");
             }
         }
+    }
+
+    //获取用户信息
+    @RequestMapping("/userInfo")
+    public Result<User> userInfo(@RequestHeader("Authorization") String token) {
+        //根据用户名查询用户
+        Map<String, Object> map = JwtUtil.parseToken(token);
+        String username = (String) map.get("username");
+
+        User user = userService.findByUsername(username);
+        return Result.success(user);
     }
 
 }
