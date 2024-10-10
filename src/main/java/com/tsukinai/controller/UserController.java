@@ -7,7 +7,9 @@ import com.tsukinai.utils.JwtUtil;
 import com.tsukinai.utils.Md5Util;
 import com.tsukinai.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -75,8 +77,9 @@ public class UserController {
     }
 
     //更新用户信息
+    //通过validated注解校验参数
     @PutMapping ("/update")
-    public Result update(@RequestBody User user) {
+    public Result update(@RequestBody @Validated User user) {
         //更新用户信息
         userService.update(user);
         return Result.success();
