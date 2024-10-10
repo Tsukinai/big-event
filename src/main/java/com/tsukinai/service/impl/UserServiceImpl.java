@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.time.LocalDateTime;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -37,5 +39,15 @@ public class UserServiceImpl implements UserService {
 
         //保存到数据库
         userMapper.add(username, md5String);
+    }
+
+    /**
+     * 更新
+     * @param user
+     */
+    @Override
+    public void update(User user) {
+        user.setUpdateTime(LocalDateTime.now());
+        userMapper.update(user);
     }
 }

@@ -8,9 +8,7 @@ import com.tsukinai.utils.Md5Util;
 import com.tsukinai.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +72,14 @@ public class UserController {
 
         User user = userService.findByUsername(username);
         return Result.success(user);
+    }
+
+    //更新用户信息
+    @PutMapping ("/update")
+    public Result update(@RequestBody User user) {
+        //更新用户信息
+        userService.update(user);
+        return Result.success();
     }
 
 }
